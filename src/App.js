@@ -8,6 +8,7 @@ import {
 } from "react-router-dom";
 import HelloWorldPage from "./pages/HelloWorldPage";
 import SignInSide from "./pages/SignIn";
+import VideoGamesPage from "./pages/VideoGamesPage";
 
 const NotImplemented = () => {
     return <div>
@@ -23,7 +24,7 @@ function App() {
                 <Sidebar/>
                 <Switch>
                     <Route path="/hello_world" exact component={HelloWorldPage}/>
-                    <Route path="/video_games" exact component={NotImplemented}/>
+                    <Route path="/video_games" exact component={VideoGamesPage}/>
                     <Route path="/sign_in" exact component={SignInSide}/>
                     <Route path="/sign_out" exact component={NotImplemented}/>
                 </Switch>
