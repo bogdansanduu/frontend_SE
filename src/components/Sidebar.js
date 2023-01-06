@@ -15,7 +15,7 @@ const Sidebar = () => {
                     gap:"15px",
                     padding: "10px",
                     width: "10vw",
-                    height: "100vh",
+                    height: "100%",
                     background: "#f0f0f0"
                 }}
             >
