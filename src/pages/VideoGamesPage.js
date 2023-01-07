@@ -21,10 +21,14 @@ const theme = createTheme();
 const VideoGamesPage = () => {
     const [data, setData] = useState([]);
     const [open, setOpen] = useState(false);
+    const [open2, setOpen2] = useState(false);
     const [games, setGames] = useState([]);
+    const [games2, setGames2] = useState([]);
 
     const handleOpen = () => setOpen(true);
+    const handleOpen2 = () => setOpen2(true);
     const handleClose = () => setOpen(false);
+    const handleClose2 = () => setOpen2(false);
 
     const handleRecommendation1 = async () => {
 
@@ -46,6 +50,28 @@ const VideoGamesPage = () => {
         setGames(fetchData);
         console.log('recommended games------>', fetchData);
         handleOpen();
+    }
+
+    const handleRecommendation2 = async () => {
+
+        const ratedGames = data.filter(game => game.rating > 0).map(goodGame => {
+            return {
+                videoGameId: goodGame.id,
+                rating: goodGame.rating
+            }
+        });
+        console.log('ratedGames---->', JSON.stringify(ratedGames))
+        const fetchData = await fetch('http://localhost:8080/api/v1/recommendation/getRecommendation2', {
+            method: "POST",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(ratedGames)
+        }).then(res => res.json());
+        setGames2(fetchData);
+        console.log('recommended games2------>', fetchData);
+        handleOpen2();
     }
 
     useEffect(() => {
@@ -108,7 +134,7 @@ const VideoGamesPage = () => {
                                 justifyContent="center"
                             >
                                 <Button variant="contained" onClick={handleRecommendation1}>Recommend method 1</Button>
-                                <Button variant="contained">Recommend method 2</Button>
+                                <Button variant="contained" onClick={handleRecommendation2}>Recommend method 2</Button>
                             </Stack>
                         </Container>
                     </Box>
@@ -159,7 +185,10 @@ const VideoGamesPage = () => {
                     </Container>
                 </main>
             </ThemeProvider>
-            <ModalGames handleClose={handleClose} open={open} games={games}/>
+            <ModalGames handleClose={handleClose} open={open} games={games}
+                        title={"Those are your recommended games using collaborative filtering!"}/>
+            <ModalGames handleClose={handleClose2} open={open2} games={games2}
+                        title={"Those are your recommended games using matrix factorization!"}/>
         </>
     );
 }

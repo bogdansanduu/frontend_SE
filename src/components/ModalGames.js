@@ -23,7 +23,7 @@ const style = {
     p: 4,
 };
 
-const ModalGames = ({handleClose, open, games}) => {
+const ModalGames = ({handleClose, open, games, title}) => {
 
     console.log('gamesMODAL----->', games)
     return (
@@ -35,7 +35,7 @@ const ModalGames = ({handleClose, open, games}) => {
         >
             <Box sx={style}>
                 <Typography id="modal-modal-title" variant="h4" component="h2" style={{marginBottom: '30px'}}>
-                    Those are your recommended games using collaborative filtering!
+                    {title}
                 </Typography>
                 <Grid container spacing={4}>
                     {games.map((game) => (
