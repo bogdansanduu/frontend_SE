@@ -153,20 +153,20 @@ const VideoGamesPage = () => {
                                         />
                                         <CardContent sx={{flexGrow: 1}}>
                                             <Typography gutterBottom variant="h5" component="h2">
-                                                {game.game_title}
+                                                {game.gameTitle}
                                             </Typography>
                                             <Typography>
-                                                {game.game_description}
+                                                {game.gameDescription}
                                             </Typography>
                                         </CardContent>
                                         <CardActions>
                                             <FormControl fullWidth>
-                                                <InputLabel id="demo-simple-select-label">Age</InputLabel>
+                                                <InputLabel id="demo-simple-select-label">Rating</InputLabel>
                                                 <Select
                                                     labelId="demo-simple-select-label"
                                                     id="demo-simple-select"
                                                     value={game.rating}
-                                                    label="Age"
+                                                    label="Rating"
                                                     onChange={(event) => handleChange(event, game)}
                                                 >
                                                     <MenuItem value={0}>Not Rated</MenuItem>
