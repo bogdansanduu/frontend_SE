@@ -5,7 +5,12 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import {Link} from "react-router-dom";
 
 
-const Sidebar = () => {
+const Sidebar = ({setToken}) => {
+
+    const handleClick = () => {
+        setToken('');
+        localStorage.clear();
+    }
     return (
         <nav className="nav-container ">
             <div
@@ -19,10 +24,9 @@ const Sidebar = () => {
                     background: "#f0f0f0"
                 }}
             >
-                <Link to={'/hello_world'}><HomeIcon/>Home</Link>
+                <Link to={'/'}><HomeIcon/>Home</Link>
                 <Link to={'/video_games'}><GamesIcon/>Games</Link>
-                <Link to={'/sign_in'}><ExitToAppIcon/>Sign In</Link>
-                <Link to={'/sign_out'}><ExitToAppIcon/>Sign Out</Link>
+                <Link to={'/sign_out'} onClick={handleClick}><ExitToAppIcon/>Sign Out</Link>
             </div>
         </nav>
     );

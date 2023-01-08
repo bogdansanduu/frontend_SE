@@ -8,25 +8,42 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import {createTheme, ThemeProvider} from '@mui/material/styles';
+import {useNavigate} from "react-router";
+import {useState} from "react";
 
 
 const theme = createTheme();
 
-export default function SignInSide() {
-    const handleSubmit = (event) => {
+const SignInSide = ({setToken}) => {
+    // const navigate = useNavigate();
+
+    const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        console.log({
+        const requestBody = {
             email: data.get('email'),
             password: data.get('password'),
-        });
+        }
+        const fetchData = await fetch('http://localhost:8080/api/v1/auth/login', {
+            method: "POST",
+            headers: new Headers({
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            }),
+            body: JSON.stringify(requestBody)
+        }).then(res => res.json());
+        if (!fetchData.status) {
+            setToken(fetchData);
+            localStorage.setItem('token', fetchData.token);
+            console.log('token----->', fetchData);
+        }
     };
 
     return (
         <ThemeProvider theme={theme}>
-            <Grid container component="main" sx={{ height: '100vh' }}>
-                <CssBaseline />
+            <Grid container component="main" sx={{height: '100vh'}}>
+                <CssBaseline/>
                 <Grid
                     item
                     xs={false}
@@ -49,13 +66,13 @@ export default function SignInSide() {
                             alignItems: 'center',
                         }}
                     >
-                        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                            <LockOutlinedIcon />
+                        <Avatar sx={{m: 1, bgcolor: 'secondary.main'}}>
+                            <LockOutlinedIcon/>
                         </Avatar>
                         <Typography component="h1" variant="h5">
                             Sign in
                         </Typography>
-                        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
+                        <Box component="form" noValidate onSubmit={handleSubmit} sx={{mt: 1}}>
                             <TextField
                                 margin="normal"
                                 required
@@ -80,7 +97,7 @@ export default function SignInSide() {
                                 type="submit"
                                 fullWidth
                                 variant="contained"
-                                sx={{ mt: 3, mb: 2 }}
+                                sx={{mt: 3, mb: 2}}
                             >
                                 Sign In
                             </Button>
@@ -91,3 +108,5 @@ export default function SignInSide() {
         </ThemeProvider>
     );
 }
+
+export default SignInSide;
