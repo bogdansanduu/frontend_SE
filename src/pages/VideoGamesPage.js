@@ -38,6 +38,7 @@ const VideoGamesPage = () => {
     const handleOpen2 = () => setOpen2(true);
     const handleClose = () => setOpen(false);
     const handleClose2 = () => setOpen2(false);
+
     const handleOpenIndividualGame = (game) => {
         setOpenIndividualGame(true);
         setClickedGame([game]);
@@ -89,9 +90,8 @@ const VideoGamesPage = () => {
     }
 
     const handleFilterByTitle = () => {
-        console.log("HERE", data);
         const filteredData = data.filter(game =>
-            game.gameTitle.includes(nameFilter)
+            game.gameTitle.toLowerCase().includes(nameFilter.toLowerCase())
         )
         setFilteredData(filteredData);
     }
@@ -160,9 +160,9 @@ const VideoGamesPage = () => {
                                 <Button variant="contained" onClick={handleRecommendation2}>Recommend method 2</Button>
                             </Stack>
                             <div style={{marginTop: "20px", display: "flex", alignContent: "space-around", gap: "5px"}}>
-                                <TextField value={nameFilter} onChange={(event) => setNameFilter(event.target.value)}/>
+                                <TextField value={nameFilter} onChange={(event) => setNameFilter(event.target.value)} placeholder={"Search games"}/>
                                 <Button variant="contained" onClick={handleFilterByTitle}>Filter by title</Button>
-                                <Button variant="contained">Button2</Button>
+                                <Button variant="contained">Filter by type</Button>
                             </div>
 
                         </Container>
@@ -220,8 +220,8 @@ const VideoGamesPage = () => {
             <ModalGames handleClose={handleClose2} open={open2} games={games2} width={800}
                         title={"Those are your recommended games using matrix factorization!"}/>
 
-            <ModalGames handleClose={handleCloseIndividualGame} open={openIndividualGame} games={clickedGame} width={300} horea={true}
-                        title={"Prices and shit"}/>
+            <ModalGames handleClose={handleCloseIndividualGame} open={openIndividualGame} games={clickedGame} width={200} horea={true}
+                        title={"More game details"}/>
         </>
     );
 }
