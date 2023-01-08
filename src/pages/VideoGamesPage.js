@@ -55,10 +55,11 @@ const VideoGamesPage = () => {
         console.log('ratedGames---->', JSON.stringify(ratedGames))
         const fetchData = await fetch('http://localhost:8080/api/v1/recommendation/getRecommendation1', {
             method: "POST",
-            headers: {
+            headers: new Headers({
+                'Authorization': 'Bearer ' + localStorage.getItem('token'),
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
+                'Content-Type': 'application/json',
+            }),
             body: JSON.stringify(ratedGames)
         }).then(res => res.json());
         setGames(fetchData);
@@ -77,10 +78,11 @@ const VideoGamesPage = () => {
         console.log('ratedGames---->', JSON.stringify(ratedGames))
         const fetchData = await fetch('http://localhost:8080/api/v1/recommendation/getRecommendation2', {
             method: "POST",
-            headers: {
+            headers: new Headers({
+                'Authorization': 'Bearer ' + localStorage.getItem('token'),
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
+                'Content-Type': 'application/json',
+            }),
             body: JSON.stringify(ratedGames)
         }).then(res => res.json());
         setGames2(fetchData);
@@ -98,7 +100,11 @@ const VideoGamesPage = () => {
 
     useEffect(() => {
         const getApiData = async () => {
-            return await fetch(`http://localhost:8080/api/v1/recommendation/getAllVideoGames`, {method: "GET"})
+            return await fetch(`http://localhost:8080/api/v1/recommendation/getAllVideoGames`, {
+                method: "GET", headers: new Headers({
+                    'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                })
+            })
                 .then(res => res.json());
         }
 

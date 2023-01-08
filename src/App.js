@@ -9,6 +9,8 @@ import {
 import HelloWorldPage from "./pages/HelloWorldPage";
 import SignInSide from "./pages/SignIn";
 import VideoGamesPage from "./pages/VideoGamesPage";
+import {useState} from "react";
+import {Login} from "@mui/icons-material";
 
 const NotImplemented = () => {
     return <div>
@@ -16,16 +18,25 @@ const NotImplemented = () => {
     </div>
 }
 
+const getToken = () => {
+
+}
 
 function App() {
+    const [token, setToken] = useState();
+
+    if (!token) {
+        return <SignInSide setToken={setToken}/>
+    }
+
     return (
         <Router>
             <div style={{display: "flex"}}>
-                <Sidebar/>
+                <Sidebar setToken={setToken}/>
                 <Switch>
-                    <Route path="/hello_world" exact component={HelloWorldPage}/>
+                    <Route path="/" exact component={HelloWorldPage}/>
                     <Route path="/video_games" exact component={VideoGamesPage}/>
-                    <Route path="/sign_in" exact component={SignInSide}/>
+                    {/*<Route path="/sign_in" exact component={SignInSide}/>*/}
                     <Route path="/sign_out" exact component={NotImplemented}/>
                 </Switch>
             </div>
