@@ -23,7 +23,7 @@ const style = {
     p: 4,
 };
 
-const ModalGames = ({handleClose, open, games, title}) => {
+const ModalGames = ({handleClose, open, games, title, width, horea}) => {
 
     console.log('gamesMODAL----->', games)
     return (
@@ -33,7 +33,18 @@ const ModalGames = ({handleClose, open, games, title}) => {
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
         >
-            <Box sx={style}>
+            <Box style={{
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                width: [width],
+                backgroundColor: 'white',
+                border: '2px solid',
+                borderRadius: "10px",
+                boxShadow: "24px",
+                p: 4
+            }}>
                 <Typography id="modal-modal-title" variant="h4" component="h2" style={{marginBottom: '30px'}}>
                     {title}
                 </Typography>
@@ -60,6 +71,11 @@ const ModalGames = ({handleClose, open, games, title}) => {
                         </Grid>
                     ))}
                 </Grid>
+                {
+                    horea ? <div>Baga aici</div> : <></>
+                }
+
+
             </Box>
         </Modal>
     );

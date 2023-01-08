@@ -15,20 +15,34 @@ import {createTheme, ThemeProvider} from '@mui/material/styles';
 import DoomImage from '../images/doom.jpg'
 import {FormControl, InputLabel, MenuItem, Select} from "@mui/material";
 import ModalGames from "../components/ModalGames";
+import TextField from "@mui/material/TextField";
 
 const theme = createTheme();
 
 const VideoGamesPage = () => {
     const [data, setData] = useState([]);
+    const [filteredData, setFilteredData] = useState([]);
+
     const [open, setOpen] = useState(false);
     const [open2, setOpen2] = useState(false);
+    const [openIndividualGame, setOpenIndividualGame] = useState(false);
+
     const [games, setGames] = useState([]);
     const [games2, setGames2] = useState([]);
+
+    const [nameFilter, setNameFilter] = useState("");
+
+    const [clickedGame, setClickedGame] = useState([]);
 
     const handleOpen = () => setOpen(true);
     const handleOpen2 = () => setOpen2(true);
     const handleClose = () => setOpen(false);
     const handleClose2 = () => setOpen2(false);
+    const handleOpenIndividualGame = (game) => {
+        setOpenIndividualGame(true);
+        setClickedGame([game]);
+    }
+    const handleCloseIndividualGame = () => setOpenIndividualGame(false);
 
     const handleRecommendation1 = async () => {
 
@@ -74,6 +88,14 @@ const VideoGamesPage = () => {
         handleOpen2();
     }
 
+    const handleFilterByTitle = () => {
+        console.log("HERE", data);
+        const filteredData = data.filter(game =>
+            game.gameTitle.includes(nameFilter)
+        )
+        setFilteredData(filteredData);
+    }
+
     useEffect(() => {
         const getApiData = async () => {
             return await fetch(`http://localhost:8080/api/v1/recommendation/getAllVideoGames`, {method: "GET"})
@@ -86,6 +108,7 @@ const VideoGamesPage = () => {
                 return game;
             })
             setData(modifiedData);
+            setFilteredData(modifiedData);
         })
     }, [])
 
@@ -136,12 +159,18 @@ const VideoGamesPage = () => {
                                 <Button variant="contained" onClick={handleRecommendation1}>Recommend method 1</Button>
                                 <Button variant="contained" onClick={handleRecommendation2}>Recommend method 2</Button>
                             </Stack>
+                            <div style={{marginTop: "20px", display: "flex", alignContent: "space-around", gap: "5px"}}>
+                                <TextField value={nameFilter} onChange={(event) => setNameFilter(event.target.value)}/>
+                                <Button variant="contained" onClick={handleFilterByTitle}>Filter by title</Button>
+                                <Button variant="contained">Button2</Button>
+                            </div>
+
                         </Container>
                     </Box>
                     <Container sx={{py: 8}} maxWidth="md">
                         {/* End hero unit */}
                         <Grid container spacing={4}>
-                            {data.map((game) => (
+                            {filteredData.map((game) => (
                                 <Grid item key={game.id} xs={12} sm={6} md={4}>
                                     <Card
                                         sx={{height: '100%', display: 'flex', flexDirection: 'column'}}
@@ -150,6 +179,7 @@ const VideoGamesPage = () => {
                                             component="img"
                                             image={DoomImage}
                                             alt="random"
+                                            onClick={() => handleOpenIndividualGame(game)}
                                         />
                                         <CardContent sx={{flexGrow: 1}}>
                                             <Typography gutterBottom variant="h5" component="h2">
@@ -185,10 +215,13 @@ const VideoGamesPage = () => {
                     </Container>
                 </main>
             </ThemeProvider>
-            <ModalGames handleClose={handleClose} open={open} games={games}
+            <ModalGames handleClose={handleClose} open={open} games={games} width={800}
                         title={"Those are your recommended games using collaborative filtering!"}/>
-            <ModalGames handleClose={handleClose2} open={open2} games={games2}
+            <ModalGames handleClose={handleClose2} open={open2} games={games2} width={800}
                         title={"Those are your recommended games using matrix factorization!"}/>
+
+            <ModalGames handleClose={handleCloseIndividualGame} open={openIndividualGame} games={clickedGame} width={300} horea={true}
+                        title={"Prices and shit"}/>
         </>
     );
 }
