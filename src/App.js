@@ -18,10 +18,6 @@ const NotImplemented = () => {
     </div>
 }
 
-const getToken = () => {
-
-}
-
 function App() {
     const [token, setToken] = useState();
 
