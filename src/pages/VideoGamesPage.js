@@ -13,6 +13,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
 import DoomImage from '../images/doom.jpg'
+import GameImage from '../images/game_img.jpg'
 import {FormControl, InputLabel, MenuItem, Select} from "@mui/material";
 import ModalGames from "../components/ModalGames";
 import TextField from "@mui/material/TextField";
@@ -98,6 +99,13 @@ const VideoGamesPage = () => {
         setFilteredData(filteredData);
     }
 
+    const handleFilterByType = () => {
+        const filteredData = data.filter(game =>
+            game.type.toLowerCase().includes(nameFilter.toLowerCase())
+        )
+        setFilteredData(filteredData);
+    }
+
     useEffect(() => {
         const getApiData = async () => {
             return await fetch(`http://localhost:8080/api/v1/recommendation/getAllVideoGames`, {
@@ -115,6 +123,7 @@ const VideoGamesPage = () => {
             })
             setData(modifiedData);
             setFilteredData(modifiedData);
+            setClickedGame([modifiedData[0]]);
         })
     }, [])
 
@@ -129,7 +138,7 @@ const VideoGamesPage = () => {
         console.log(data);
     }
 
-    console.log('data----->', data);
+    //console.log('data----->', data);
     return (
         <>
             <ThemeProvider theme={theme}>
@@ -168,7 +177,7 @@ const VideoGamesPage = () => {
                             <div style={{marginTop: "20px", display: "flex", alignContent: "space-around", gap: "5px"}}>
                                 <TextField value={nameFilter} onChange={(event) => setNameFilter(event.target.value)} placeholder={"Search games"}/>
                                 <Button variant="contained" onClick={handleFilterByTitle}>Filter by title</Button>
-                                <Button variant="contained">Filter by type</Button>
+                                <Button variant="contained" onClick={handleFilterByType}>Filter by type</Button>
                             </div>
 
                         </Container>
@@ -183,7 +192,7 @@ const VideoGamesPage = () => {
                                     >
                                         <CardMedia
                                             component="img"
-                                            image={DoomImage}
+                                            image={GameImage}
                                             alt="random"
                                             onClick={() => handleOpenIndividualGame(game)}
                                         />
@@ -226,7 +235,7 @@ const VideoGamesPage = () => {
             <ModalGames handleClose={handleClose2} open={open2} games={games2} width={800}
                         title={"Those are your recommended games using matrix factorization!"}/>
 
-            <ModalGames handleClose={handleCloseIndividualGame} open={openIndividualGame} games={clickedGame} width={200} horea={true}
+            <ModalGames handleClose={handleCloseIndividualGame} open={openIndividualGame} games={clickedGame} width={400} horea={true}
                         title={"More game details"}/>
         </>
     );
